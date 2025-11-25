@@ -17,10 +17,11 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<PrivateRoute><DashboardLayout /></PrivateRoute>}>
-          <Route index element={<Navigate to="/inbox" />} />
+          <Route index element={<Navigate to="/inbox" replace />} />
           <Route path="inbox" element={<Inbox />} />
           <Route path="sent" element={<Sent />} />
         </Route>
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   );
