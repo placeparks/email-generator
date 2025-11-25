@@ -14,14 +14,29 @@ const Register = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
+        
+        // Normalize email to lowercase and trim whitespace
+        const normalizedEmail = formData.email.toLowerCase().trim();
+        
+        // Client-side validation for email domain
+        if (!normalizedEmail.endsWith('@miracmail.com')) {
+            alert('Only emails ending with @miracmail.com are allowed');
+            return;
+        }
+        
         setLoading(true);
         try {
-            const res = await axios.post(`${API_BASE_URL}/api/auth/register`, formData);
+            // Send normalized email to backend
+            const res = await axios.post(`${API_BASE_URL}/api/auth/register`, {
+                ...formData,
+                email: normalizedEmail
+            });
             localStorage.setItem('token', res.data.token);
             navigate('/inbox');
         } catch (err) {
             console.error(err.response?.data);
-            alert('Registration Failed: ' + (err.response?.data?.msg || 'Server Error'));
+            const errorMessage = err.response?.data?.msg || 'Server Error';
+            alert('Registration Failed: ' + errorMessage);
         } finally {
             setLoading(false);
         }
@@ -43,7 +58,7 @@ const Register = () => {
                     <div className="bg-gradient-to-tr from-cyan-500 to-blue-400 w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-cyan-500/30">
                         <Mail className="w-7 h-7 text-white" />
                     </div>
-                    <h2 className="text-3xl font-bold text-white tracking-tight">Join NovaMail</h2>
+                    <h2 className="text-3xl font-bold text-white tracking-tight">Join MiracMail</h2>
                     <p className="text-gray-400 mt-3 text-base">Experience the future of email</p>
                 </div>
 
@@ -70,12 +85,13 @@ const Register = () => {
                             <input
                                 type="email"
                                 name="email"
-                                placeholder="you@novamail.com"
+                                placeholder="you@miracmail.com"
                                 onChange={onChange}
                                 className="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 outline-none transition-all text-white placeholder-gray-600"
                                 required
                             />
                         </div>
+                        <p className="text-xs text-gray-500 ml-1">Only @miracmail.com emails are allowed</p>
                     </div>
 
                     <div className="space-y-2">

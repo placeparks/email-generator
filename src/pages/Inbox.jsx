@@ -31,6 +31,7 @@ const Inbox = () => {
 
     const filteredEmails = emails.filter(email =>
         email.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (email.fromName && email.fromName.toLowerCase().includes(searchTerm.toLowerCase())) ||
         email.from.toLowerCase().includes(searchTerm.toLowerCase()) ||
         email.text.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -78,7 +79,7 @@ const Inbox = () => {
                             >
                                 <div className="flex justify-between items-baseline mb-1.5">
                                     <span className={`text-sm truncate pr-2 ${email.isRead ? 'text-gray-400 font-medium' : 'text-white font-bold'}`}>
-                                        {email.from}
+                                        {email.fromName || email.from}
                                     </span>
                                     <span className="text-xs text-gray-500 whitespace-nowrap">
                                         {new Date(email.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -118,7 +119,9 @@ const Inbox = () => {
                                 <div className="min-w-0">
                                     <h2 className="text-xl font-bold text-white leading-tight mb-1.5 truncate">{selectedEmail.subject}</h2>
                                     <div className="flex items-center gap-2 text-sm text-gray-400">
-                                        <span className="font-medium text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded text-xs border border-blue-500/20">{selectedEmail.from}</span>
+                                        <span className="font-medium text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded text-xs border border-blue-500/20">
+                                            {selectedEmail.fromName ? `${selectedEmail.fromName} <${selectedEmail.from}>` : selectedEmail.from}
+                                        </span>
                                         <span className="text-xs text-gray-500">to me</span>
                                     </div>
                                 </div>

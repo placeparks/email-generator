@@ -16,7 +16,12 @@ const Login = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const res = await axios.post(`${API_BASE_URL}/api/auth/login`, formData);
+            // Normalize email to lowercase and trim whitespace
+            const normalizedEmail = formData.email.toLowerCase().trim();
+            const res = await axios.post(`${API_BASE_URL}/api/auth/login`, {
+                ...formData,
+                email: normalizedEmail
+            });
             localStorage.setItem('token', res.data.token);
             navigate('/inbox');
         } catch (err) {
@@ -44,7 +49,7 @@ const Login = () => {
                         <Mail className="w-7 h-7 text-white" />
                     </div>
                     <h2 className="text-3xl font-bold text-white tracking-tight">Welcome Back</h2>
-                    <p className="text-gray-400 mt-3 text-base">Sign in to access NovaMail</p>
+                    <p className="text-gray-400 mt-3 text-base">Sign in to access MiracMail</p>
                 </div>
 
                 <form onSubmit={onSubmit} className="space-y-6">
@@ -55,7 +60,7 @@ const Login = () => {
                             <input
                                 type="email"
                                 name="email"
-                                placeholder="you@novamail.com"
+                                placeholder="you@miracmail.com"
                                 onChange={onChange}
                                 className="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 outline-none transition-all text-white placeholder-gray-600"
                                 required
@@ -94,7 +99,7 @@ const Login = () => {
                 </form>
 
                 <p className="mt-8 text-center text-sm text-gray-400">
-                    New to NovaMail?{' '}
+                    New to MiracMail?{' '}
                     <Link to="/register" className="text-cyan-400 font-medium hover:text-cyan-300 hover:underline transition-colors">
                         Create an account
                     </Link>

@@ -1,18 +1,37 @@
-import { useState } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { Inbox, Send, LogOut, Mail, Plus, Menu, User, Search, Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import axios from 'axios';
 import ComposeModal from '../components/ComposeModal';
+import API_BASE_URL from '../config/api';
 
 const DashboardLayout = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [isComposeOpen, setIsComposeOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [user, setUser] = useState(null);
     const isActive = (path) => location.pathname.includes(path);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await axios.get(`${API_BASE_URL}/api/auth/user`, {
+                    headers: { 'x-auth-token': token },
+                });
+                setUser(res.data);
+            } catch (err) {
+                console.error('Failed to fetch user:', err);
+            }
+        };
+        fetchUser();
+    }, []);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        window.location.href = '/login';
+        navigate('/login', { replace: true });
     };
 
     const NavItem = ({ to, icon: Icon, label, active }) => (
@@ -56,7 +75,7 @@ const DashboardLayout = () => {
                     <div className="bg-gradient-to-tr from-blue-600 to-cyan-500 p-2.5 rounded-xl shadow-lg shadow-blue-900/20">
                         <Mail className="w-5 h-5 text-white" />
                     </div>
-                    <span className="text-xl font-bold text-white tracking-tight">NovaMail</span>
+                    <span className="text-xl font-bold text-white tracking-tight">MiracMail</span>
                 </div>
 
                 <div className="px-6 mb-8">
@@ -84,8 +103,8 @@ const DashboardLayout = () => {
                             ME
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-white truncate">My Account</p>
-                            <p className="text-xs text-gray-400 truncate">user@novamail.com</p>
+                            <p className="text-sm font-medium text-white truncate">{user?.name || 'My Account'}</p>
+                            <p className="text-xs text-gray-400 truncate">{user?.email || 'user@miracmail.com'}</p>
                         </div>
                     </div>
                     <button
@@ -106,7 +125,7 @@ const DashboardLayout = () => {
                         <div className="bg-blue-600 p-1.5 rounded-lg">
                             <Mail className="w-4 h-4 text-white" />
                         </div>
-                        <span className="font-bold text-white">NovaMail</span>
+                        <span className="font-bold text-white">MiracMail</span>
                     </div>
                     <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 text-gray-400 hover:bg-white/5 rounded-lg">
                         <Menu className="w-6 h-6" />
