@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { Inbox, Send, LogOut, Mail, Plus, Menu, User, Search, Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
@@ -8,6 +8,7 @@ import API_BASE_URL from '../config/api';
 
 const DashboardLayout = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [isComposeOpen, setIsComposeOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [user, setUser] = useState(null);
@@ -30,7 +31,7 @@ const DashboardLayout = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        window.location.href = '/login';
+        navigate('/login', { replace: true });
     };
 
     const NavItem = ({ to, icon: Icon, label, active }) => (
