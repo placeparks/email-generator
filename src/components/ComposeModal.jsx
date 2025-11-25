@@ -67,7 +67,7 @@ const ComposeModal = ({ isOpen, onClose }) => {
                                     <input
                                         type="email"
                                         name="to"
-                                        placeholder="To"
+                                        placeholder="recipient@example.com"
                                         value={formData.to}
                                         onChange={onChange}
                                         className="w-full bg-transparent border-b border-white/10 py-2 text-white placeholder-gray-500 focus:border-blue-500 outline-none transition-colors text-sm"
