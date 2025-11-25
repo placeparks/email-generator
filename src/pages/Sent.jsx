@@ -118,7 +118,7 @@ const Sent = () => {
                                 <div className="min-w-0">
                                     <h2 className="text-xl font-bold text-white leading-tight mb-1.5 truncate">{selectedEmail.subject}</h2>
                                     <div className="flex items-center gap-2 text-sm text-gray-400">
-                                        <span className="font-medium text-white">Me</span>
+                                        <span className="font-medium text-white">{selectedEmail.fromName || 'Me'}</span>
                                         <span className="text-xs text-gray-500">to {selectedEmail.to}</span>
                                     </div>
                                 </div>
