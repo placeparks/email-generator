@@ -15,11 +15,16 @@ const Register = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         
+<<<<<<< HEAD
         // Normalize email to lowercase and trim whitespace
         const normalizedEmail = formData.email.toLowerCase().trim();
         
         // Client-side validation for email domain
         if (!normalizedEmail.endsWith('@miracmail.com')) {
+=======
+        // Client-side validation for email domain
+        if (!formData.email.toLowerCase().endsWith('@miracmail.com')) {
+>>>>>>> 2e6b03fa8b92e2be145f0807c7aae7cd86502379
             alert('Only emails ending with @miracmail.com are allowed');
             return;
         }
