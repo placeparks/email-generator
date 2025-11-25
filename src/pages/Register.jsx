@@ -84,7 +84,6 @@ const Register = () => {
                             />
                         </div>
                         <p className="text-xs text-gray-500 ml-1">Only @miracmail.com emails are allowed</p>
-                        </div>
                     </div>
 
                     <div className="space-y-2">
